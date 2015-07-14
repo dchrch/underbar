@@ -244,6 +244,14 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    return _.reduce(arguments, function(res, arg) {
+      _.each(arg, function(item, key) {
+        if (res[key] === undefined) {
+          res[key] = item;
+        }
+      });
+      return res;
+    });
   };
 
 
