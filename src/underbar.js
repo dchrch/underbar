@@ -295,6 +295,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var memory = {};
+    
+    return function(arg) {
+      if (!memory.hasOwnProperty(arg)) {
+        memory[arg] = func.apply(this, arguments);
+      }
+      return memory[arg];
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
