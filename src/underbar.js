@@ -390,6 +390,11 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    result = result || [];
+    _.each(nestedArray, function(i) {
+        Array.isArray(i) ? _.flatten(i, result) : result.push(i);
+    });
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
