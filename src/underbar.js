@@ -119,8 +119,8 @@
     // the members, it also maintains an array of results.
     var result = [];
     
-    _.each(collection, function(item) {
-      result.push(iterator(item));
+    _.each(collection, function(item, key, list) {
+      result.push(iterator(item, key, list));
     });
     
     return result;
@@ -360,7 +360,7 @@
   _.sortBy = function(collection, iterator) {
     var propAccess = function(list) {
       return list[iterator];
-    }
+    };
     var test = typeof iterator === 'function' ? iterator : propAccess;
     var clone = collection.slice();
     return _.map(collection, function() {
@@ -378,6 +378,11 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var args = Array.prototype.slice.call(arguments);
+    var sortedArgs = _.sortBy(args, 'length');
+    return _.map(sortedArgs, function(item, index) {
+      return _.pluck(args, index);
+    });
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
