@@ -358,6 +358,18 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var propAccess = function(list) {
+      return list[iterator];
+    }
+    var test = typeof iterator === 'function' ? iterator : propAccess;
+    var clone = collection.slice();
+    return _.map(collection, function() {
+      var lowest = _.reduce(clone, function(res, item) {
+        return test(item) < test(res) ? item : res;
+      });
+      var index = _.indexOf(clone, lowest);
+      return clone.splice(index, 1)[0];
+    });
   };
 
   // Zip together two or more arrays with elements of the same index
